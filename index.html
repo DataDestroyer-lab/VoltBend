@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#2196F3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="VoltBend">
+    <meta name="description" content="Professional conduit bending calculator with 20+ bend types">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%232196F3' width='180' height='180'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='80' font-weight='bold' fill='%23FBC02D' font-family='Arial'>⚡</text></svg>">
+    <link rel="manifest" href="manifest.json">
+    <title>VoltBend | Pro Conduit Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+</head>
+<body>
+
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>TOOLBOX</h3>
+            <button class="icon-btn" onclick="toggleSidebar()"><ion-icon name="close"></ion-icon></button>
+        </div>
+        <div class="sidebar-scroll">
+            
+            <button class="nav-item" onclick="loadCalc('home')">
+                <ion-icon name="grid-outline" style="vertical-align: text-bottom; margin-right: 8px;"></ion-icon>
+                Dashboard
+            </button>
+
+            <div class="nav-group-label">CALCULATORS</div>
+            <button class="nav-item" onclick="loadCalc('fill')"><ion-icon name="layers-outline"></ion-icon> Conduit Fill</button>
+
+            <div class="nav-group-label">ESSENTIAL BENDS</div>
+            <button class="nav-item" onclick="loadCalc('stub')"><ion-icon name="return-up-forward-outline"></ion-icon> Stub Up</button>
+            <button class="nav-item" onclick="loadCalc('offset')"><ion-icon name="resize-outline"></ion-icon> Standard Offset</button>
+            <button class="nav-item" onclick="loadCalc('saddle3')"><ion-icon name="pulse-outline"></ion-icon> 3-Point Saddle</button>
+            <button class="nav-item" onclick="loadCalc('saddle4')"><ion-icon name="pulse-outline"></ion-icon> 4-Point Saddle</button>
+            <button class="nav-item" onclick="loadCalc('kick')"><ion-icon name="footsteps-outline"></ion-icon> Kick</button>
+
+            <div class="nav-group-label">ADVANCED OFFSETS</div>
+            <button class="nav-item" onclick="loadCalc('rolling')"><ion-icon name="sync-outline"></ion-icon> Rolling Offset</button>
+            <button class="nav-item" onclick="loadCalc('parallel')"><ion-icon name="pause-outline"></ion-icon> Parallel Offset</button>
+            <button class="nav-item" onclick="loadCalc('compound_off')"><ion-icon name="shuffle-outline"></ion-icon> Compound Offset</button>
+            <button class="nav-item" onclick="loadCalc('shallow_off')">Shallow Offset</button>
+            <button class="nav-item" onclick="loadCalc('deep_off')">Deep Offset</button>
+            <button class="nav-item" onclick="loadCalc('zbend')">Z-Bend</button>
+            <button class="nav-item" onclick="loadCalc('off_kick')">Offset with Kick</button>
+
+            <div class="nav-group-label">COMBINATIONS</div>
+            <button class="nav-item" onclick="loadCalc('back2back')">Back-to-Back 90s</button>
+            <button class="nav-item" onclick="loadCalc('stub_kick')">Stub-Up with Kick</button>
+            <button class="nav-item" onclick="loadCalc('rolling_stub')">Rolling Stub-Up</button>
+            <button class="nav-item" onclick="loadCalc('off_90')">Offset into 90</button>
+            <button class="nav-item" onclick="loadCalc('90_off')">90 with Offset</button>
+            <button class="nav-item" onclick="loadCalc('roll_90')">Rolling 90</button>
+            <button class="nav-item" onclick="loadCalc('sad_off')">Saddle into Offset</button>
+            <button class="nav-item" onclick="loadCalc('off_sad')">Offset into Saddle</button>
+
+            <div class="nav-group-label">FIELD REFERENCE</div>
+            <button class="nav-item" onclick="openCheatsheet()"><ion-icon name="list-outline"></ion-icon> Multiplier Cheatsheet</button>
+            <button class="nav-item" onclick="loadProTips('pro_tips_offset')"><ion-icon name="bulb-outline"></ion-icon> Offset Tips</button>
+            <button class="nav-item" onclick="loadProTips('pro_tips_saddle')"><ion-icon name="bulb-outline"></ion-icon> Saddle Tips</button>
+            <button class="nav-item" onclick="loadProTips('pro_tips_fill')"><ion-icon name="bulb-outline"></ion-icon> Fill Calculator Tips</button>
+            <button class="nav-item" onclick="loadProTips('pro_tips_field')"><ion-icon name="bulb-outline"></ion-icon> Field Best Practices</button>
+            <button class="nav-item" onclick="loadGuide('nec_support')"><ion-icon name="book-outline"></ion-icon> NEC Support & Spacing</button>
+            <button class="nav-item" onclick="loadGuide('drill_sizes')"><ion-icon name="ellipse-outline"></ion-icon> KO & Hole Saw Sizes</button>
+            <button class="nav-item" onclick="loadGuide('conduit_specs')"><ion-icon name="stats-chart-outline"></ion-icon> Pipe Dimensions</button>
+            <button class="nav-item" onclick="loadGuide('bend_math')">Bending Math (Classroom)</button>
+            <button class="nav-item" onclick="loadGuide('tape_reading')">How to Read a Tape</button>
+            <button class="nav-item" onclick="loadGuide('trade_terms')">Trade Terms & Slang</button>
+            
+            <div class="nav-group-label">TROUBLESHOOT</div>
+            <button class="nav-item" onclick="loadCalc('dogleg')"><ion-icon name="build-outline"></ion-icon> Dogleg Fixer</button>
+        </div>
+    </nav>
+
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="main-content">
+        
+        <header>
+            <div class="header-left">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </button>
+                <div class="app-logo">
+                    <ion-icon name="flash" style="color:#facc15; margin-right:6px;"></ion-icon><span>VOLT</span>BEND
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" onclick="openCheatsheet()" title="Quick Reference" style="margin-right:8px;">
+                    <ion-icon name="clipboard-outline"></ion-icon>
+                </button>
+                <button class="icon-btn" onclick="viewHistory()" title="History" style="margin-right:8px;">
+                    <ion-icon name="time-outline"></ion-icon>
+                </button>
+                <button class="icon-btn" onclick="exportCalculation()" title="Export" style="margin-right:12px;">
+                    <ion-icon name="download-outline"></ion-icon>
+                </button>
+                <button id="install-btn" onclick="installApp()" title="Add to Home Screen" style="margin-right:8px; display:none; background:linear-gradient(135deg, #4CAF50, #45a049); border:none; color:white; padding:4px 10px; border-radius:16px; font-size:0.7rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:4px;">
+                    <ion-icon name="phone-portrait-outline" style="font-size:0.8rem;"></ion-icon>
+                    <span style="display:none;">Install</span>
+                </button>
+                <button class="icon-btn" onclick="openAbout()" style="margin-right:10px;">
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                </button>
+                
+                <button class="icon-btn" onclick="openSettings()" style="margin-right:15px;">
+                    <ion-icon name="settings-sharp"></ion-icon>
+                </button>
+                <div class="active-tool-badge" onclick="openBenderLibrary()">
+                    <span class="tool-dot"></span>
+                    <span id="header-tool-name">Tool</span>
+                </div>
+            </div>
+        </header>
+
+        <main id="view-calc">
+            <div class="calc-header-row">
+                <h2 id="calc-title">Select a Bend</h2>
+                <button class="icon-btn" onclick="clearInputs()"><ion-icon name="refresh"></ion-icon></button>
+            </div>
+
+            <div class="calc-body">
+                <div id="calc-inputs" class="input-container">
+                    <div class="empty-state">
+                        <ion-icon name="apps-outline" style="font-size: 4rem; opacity: 0.5;"></ion-icon>
+                        <p>Select a tool from the menu to start bending.</p>
+                    </div>
+                </div>
+
+                <div id="result-box" class="result-container hidden">
+                    <div class="tape-header">
+                        <ion-icon name="construct"></ion-icon> FABRICATION GUIDE
+                    </div>
+                    
+                    <div class="tape-scroll-area">
+                        <div id="tape-canvas"></div>
+                    </div>
+
+                    <div id="text-results" class="text-results-list"></div>
+
+                    <div class="result-footer">
+                        <div class="stat-box">
+                            <label>SHRINK</label>
+                            <span id="stat-shrink">--</span>
+                        </div>
+                        <div class="stat-box">
+                            <label>CUT LENGTH</label>
+                            <span id="stat-length">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="calc-btn" class="floating-fab hidden" onclick="runCalculation()">
+                <ion-icon name="calculator"></ion-icon>
+            </button>
+        </main>
+
+        <div id="modal-benders" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Select Equipment</h2>
+                    <button class="icon-btn" onclick="closeBenderLibrary()"><ion-icon name="close"></ion-icon></button>
+                </div>
+                <div class="bender-filter-bar">
+                    <button class="filter-btn active" onclick="filterBenders('all')">ALL</button>
+                    <button class="filter-btn" onclick="filterBenders('hand')">HAND</button>
+                    <button class="filter-btn" onclick="filterBenders('electric')">ELECTRIC</button>
+                </div>
+                <div id="bender-list" class="bender-list-scroll"></div>
+            </div>
+        </div>
+
+        <div id="modal-settings" class="modal hidden">
+            <div class="modal-content" style="height:auto; min-height:300px;">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button class="icon-btn" onclick="closeSettings()"><ion-icon name="close"></ion-icon></button>
+                </div>
+                <div style="padding:20px;">
+                    <label style="color:var(--primary); font-size:0.8rem; font-weight:bold; display:block; margin-bottom:15px;">MEASUREMENT FORMAT</label>
+                    
+                    <div class="setting-option" onclick="setFormat('feet')">
+                        <div class="radio-circle" id="rad-feet"></div>
+                        <div>
+                            <div style="font-weight:bold; color:#fff;">Feet & Inches</div>
+                            <div style="font-size:0.8rem; color:#888;">1' 4 3/4"</div>
+                        </div>
+                    </div>
+
+                    <div class="setting-option" onclick="setFormat('inch')">
+                        <div class="radio-circle" id="rad-inch"></div>
+                        <div>
+                            <div style="font-weight:bold; color:#fff;">Inches Only</div>
+                            <div style="font-size:0.8rem; color:#888;">16 3/4"</div>
+                        </div>
+                    </div>
+
+                    <div class="setting-option" onclick="setFormat('metric')">
+                        <div class="radio-circle" id="rad-metric"></div>
+                        <div>
+                            <div style="font-weight:bold; color:#fff;">Metric</div>
+                            <div style="font-size:0.8rem; color:#888;">42.5 cm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-about" class="modal hidden">
+            <div class="modal-content" style="height:auto; padding-bottom:30px;">
+                <div class="modal-header">
+                    <h2>About</h2>
+                    <button class="icon-btn" onclick="closeAbout()"><ion-icon name="close"></ion-icon></button>
+                </div>
+                <div class="about-container" style="text-align: center; padding: 10px 20px;">
+                    <div class="about-logo-icon" style="font-size: 3rem; color: var(--primary); margin: 10px 0;">
+                        <ion-icon name="flash"></ion-icon>
+                    </div>
+                    
+                    <h3 style="color:var(--text); margin:0 0 10px 0; letter-spacing:1px;">VoltBend Pro</h3>
+                    
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin: 0 0 15px; line-height: 1.5;">
+                        The ultimate field companion for professional conduit bending.
+                    </p>
+
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin: 0 0 25px;">
+                        Engineered by 
+                        <a href="https://github.com/DataDestroyer-lab" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:bold; border-bottom:1px dotted var(--primary);">
+                            DataDestroyer
+                        </a>
+                    </p>
+                    
+                    <div style="background:var(--surface-light); padding:6px 18px; border-radius:20px; display:inline-block; font-size:0.8rem; font-weight:bold; color:var(--primary); border:1px solid var(--primary);">
+                        Version 1.1.3
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-guide" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header" style="background:var(--surface-light);">
+                    <h2>How-To Guide</h2>
+                    <button class="icon-btn" onclick="closeGuide()"><ion-icon name="close"></ion-icon></button>
+                </div>
+                <div id="guide-content" style="padding:20px; overflow-y:auto; line-height:1.6; color:#ccc; max-height:60vh;">
+                    </div>
+            </div>
+        </div>
+
+        <div id="modal-cheatsheet" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Quick Multipliers</h2>
+                    <button class="icon-btn" onclick="closeCheatsheet()"><ion-icon name="close"></ion-icon></button>
+                </div>
+                <div style="padding:20px; overflow-y:auto;">
+                    <table style="width:100%; border-collapse: collapse; color: #fff; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #444;">
+                                <th style="text-align:left; padding: 8px;">Angle</th>
+                                <th style="text-align:right; padding: 8px;">Multiplier</th>
+                                <th style="text-align:right; padding: 8px;">Shrink/In</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #333;">
+                                <td style="padding: 10px 8px;">10°</td>
+                                <td style="text-align:right; color:var(--primary);">6.0</td>
+                                <td style="text-align:right;">1/16"</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #333;">
+                                <td style="padding: 10px 8px;">22.5°</td>
+                                <td style="text-align:right; color:var(--primary);">2.6</td>
+                                <td style="text-align:right;">3/16"</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #333;">
+                                <td style="padding: 10px 8px;">30°</td>
+                                <td style="text-align:right; color:var(--primary);">2.0</td>
+                                <td style="text-align:right;">1/4"</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #333;">
+                                <td style="padding: 10px 8px;">45°</td>
+                                <td style="text-align:right; color:var(--primary);">1.41</td>
+                                <td style="text-align:right;">3/8"</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #333;">
+                                <td style="padding: 10px 8px;">60°</td>
+                                <td style="text-align:right; color:var(--primary);">1.15</td>
+                                <td style="text-align:right;">1/2"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top:20px; font-size:0.8rem; color:#888;">* Shrink per inch of offset depth.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="database.js"></script>
+    <script src="home.js"></script>
+    <script src="knowledge.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function openCheatsheet() {
+            document.getElementById('modal-cheatsheet').classList.remove('hidden');
+        }
+        function closeCheatsheet() {
+            document.getElementById('modal-cheatsheet').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
