@@ -1,4 +1,5 @@
 # VoltBend | Professional Conduit Bending Calculator
+link https://datadestroyer-lab.github.io/VoltBend/
 
 A lightweight, PWA-enabled conduit bending calculator for electricians. Calculate bend marks, shrink, travel, and offsets for all common conduit bends with 60+ professional bender equipment profiles.
 
@@ -454,3 +455,4 @@ A: Privacy-first design. Your job site data stays on YOUR device.
 
 **VoltBend**: Making conduit bending calculations fast, accurate, and accessible.  
 *By electricians, for electricians.* ⚡
+
