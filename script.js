@@ -80,7 +80,12 @@ function toggleSidebar() {
 function loadCalc(type) {
     // Handle Home Dashboard
     if (type === 'home') {
-        if (typeof loadHome === 'function') loadHome();
+        document.getElementById('calc-title').innerText = "Dashboard";
+        document.getElementById('calc-inputs').innerHTML = homeHTML;
+        document.getElementById('result-box').classList.add('hidden');
+        document.getElementById('calc-btn').classList.add('hidden');
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('visible');
         toggleSidebar();
         return;
     }
@@ -969,4 +974,5 @@ function resetInstallPrompt() {
     installDismissed = false;
     deferredPrompt = null;
     showNotification('Install prompt reset. Try installing again!');
+
 }
